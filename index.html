@@ -7,6 +7,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  var SUPABASE_URL = 'https://jwedkjdqnecqhqxrfprp.supabase.co';
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3ZWRramRxbmVjcWhxeHJmcHJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MzQ4MjUsImV4cCI6MjA5MzMxMDgyNX0.qgctkheCNfT5Ez98JkoQKVOGFzDZNr3irxMB42YIAXE';
+  var sb = null;
+  try {
+    var { createClient } = supabase;
+    sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('✅ Supabase initialized successfully in index.html');
+  } catch(e) { console.error('❌ Supabase init FAILED:', e); }
+</script>
 </head>
 <body>
 

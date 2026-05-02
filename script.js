@@ -148,59 +148,108 @@ function closeVideoModal() {
   modal.classList.add('hidden');
 }
 
-// ===== MESSAGES (localStorage backed) =====
-function getSavedMessages() {
-  try {
-    return JSON.parse(localStorage.getItem('farewellMessages')) || [];
-  } catch { return []; }
+// ===== MESSAGES (Supabase powered) =====
+
+function makeSticky(m, key){
+  const d=document.createElement('div');
+  d.className=`sticky-note ${m.color}`;
+  d.style.setProperty('--rot', m.rotation || m.rot || m.r || '0deg');
+  if(key) d.dataset.key = key;
+  d.innerHTML=`<button class="remove-msg-btn" onclick="deleteMessage(this.parentElement)" title="Delete message">×</button><p>${m.text}</p><div class="sticky-author">— ${m.name}</div>`;
+  return d;
 }
 
-function saveMessages(messages) {
-  localStorage.setItem('farewellMessages', JSON.stringify(messages));
+async function deleteMessage(el){
+  const key = el.dataset.key;
+  if(key && typeof sb !== 'undefined' && sb){
+    try{
+      await sb.from('messages').delete().eq('id', key);
+      console.log('🗑️ Message deleted from Supabase');
+    }catch(e){ console.error('Delete error:', e); }
+  }
+  el.remove();
 }
 
-function initMessages() {
-  const board = document.getElementById('stickyBoard');
-  if (!board) return;
-  const messages = getSavedMessages();
-  board.innerHTML = messages.map((m, i) => createStickyHTML(m, i)).join('');
+function renderMessages(msgs){
+  var b=document.getElementById('stickyBoard');
+  if(!b) return;
+  b.innerHTML='';
+  msgs.forEach(function(m){ b.appendChild(makeSticky(m, m.id || m.key)); });
 }
 
-function createStickyHTML(m, index) {
-  return `
-    <div class="sticky-note ${m.color}" style="--rot:${m.rot}" data-msg-index="${index}">
-      <button class="remove-msg-btn" onclick="deleteMessage(${index})" title="Delete message">×</button>
-      <p>${m.text}</p>
-      <div class="sticky-author">— ${m.name}</div>
-    </div>
-  `;
+async function initMessages(){
+  if(typeof sb === 'undefined' || !sb){
+    console.error('❌ Supabase not initialized in script.js!');
+    return;
+  }
+  console.log('🔄 Loading messages from Supabase...');
+  try{
+    var { data, error } = await sb
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if(error){
+      console.error('❌ Supabase read error:', error.message);
+      return;
+    }
+    console.log('✅ Messages loaded from Supabase:', data ? data.length : 0);
+    if(data && data.length > 0){
+      renderMessages(data);
+    }
+
+    // Real-time subscription
+    sb.channel('messages-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, function(payload){
+        loadAllMessages();
+      })
+      .subscribe();
+
+  }catch(e){ console.error('❌ Supabase error:', e); }
 }
 
-function deleteMessage(index) {
-  const messages = getSavedMessages();
-  messages.splice(index, 1);
-  saveMessages(messages);
-  initMessages(); // re-render with updated indexes
+async function loadAllMessages(){
+  if(typeof sb === 'undefined' || !sb) return;
+  var { data, error } = await sb
+    .from('messages')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if(!error && data){
+    renderMessages(data);
+  }
 }
 
-function postMessage() {
-  const name = document.getElementById('msgName').value.trim() || 'Anonymous 💌';
-  const text = document.getElementById('msgText').value.trim();
-  const color = document.getElementById('msgColor').value;
+async function postMessage(){
+  var name=document.getElementById('msgName').value.trim()||'Anonymous 💌';
+  var text=document.getElementById('msgText').value.trim();
+  var color=document.getElementById('msgColor').value;
+  if(!text){showToast('Please write something ✏️');return;}
+  var rots=['-2deg','-1.2deg','0deg','1deg','2deg'];
+  var r=rots[Math.floor(Math.random()*rots.length)];
 
-  if(!text) { showToast('Please write something ✏️'); return; }
+  // Optimistic UI
+  var tempMsg={name:name,text:text,color:color,rotation:r,id:'temp_'+Date.now()};
+  var b=document.getElementById('stickyBoard');
+  if(b) b.prepend(makeSticky(tempMsg, tempMsg.id));
 
-  const rots = ['-2deg','-1deg','0deg','1deg','2deg'];
-  const rot = rots[Math.floor(Math.random() * rots.length)];
-
-  const messages = getSavedMessages();
-  messages.unshift({ name, text, color, rot });
-  saveMessages(messages);
-
-  initMessages(); // re-render all messages
-
-  document.getElementById('msgName').value = '';
-  document.getElementById('msgText').value = '';
+  // Save to Supabase
+  if(typeof sb !== 'undefined' && sb){
+    try{
+      var { data, error } = await sb
+        .from('messages')
+        .insert([{ name: name, text: text, color: color, rotation: r }])
+        .select();
+      
+      if(error){
+        console.error('❌ Supabase insert error:', error.message);
+        showToast('Error posting message ❌');
+        return;
+      }
+    }catch(e){ console.error('❌ Post error:', e); }
+  }
+  
+  document.getElementById('msgName').value='';
+  document.getElementById('msgText').value='';
   showToast('Message posted! 💌');
 }
 
