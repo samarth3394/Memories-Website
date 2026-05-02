@@ -6,13 +6,14 @@
 <title>Farewell 2026 🎓 | Engineering Farewell</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   var SUPABASE_URL = 'https://jwedkjdqnecqhqxrfprp.supabase.co';
   var SUPABASE_KEY = 'sb_publishable_mvbEdpP1G9Yhf1cttpzPGg_UDheWv8a';
-  var supabase = null;
+  var sb = null;
   try {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    var { createClient } = supabase;
+    sb = createClient(SUPABASE_URL, SUPABASE_KEY);
     console.log('✅ Supabase initialized successfully');
   } catch(e) { console.error('❌ Supabase init FAILED:', e); }
 </script>
@@ -918,9 +919,9 @@ function makeSticky(m, key){
 
 async function deleteMsg(el){
   const key = el.dataset.key;
-  if(key && supabase){
+  if(key && sb){
     try{
-      await supabase.from('messages').delete().eq('id', key);
+      await sb.from('messages').delete().eq('id', key);
       console.log('🗑️ Message deleted from Supabase');
     }catch(e){ console.error('Delete error:', e); }
   }
@@ -935,13 +936,13 @@ function renderMessages(msgs){
 }
 
 async function makeStickyDefaults(){
-  if(!supabase){
+  if(!sb){
     console.error('❌ Supabase not initialized!');
     return;
   }
   console.log('🔄 Loading messages from Supabase...');
   try{
-    var { data, error } = await supabase
+    var { data, error } = await sb
       .from('messages')
       .select('*')
       .order('created_at', { ascending: false });
@@ -956,7 +957,7 @@ async function makeStickyDefaults(){
     }
 
     // Real-time subscription — new messages appear instantly for ALL users
-    supabase
+    sb
       .channel('messages-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, function(payload){
         console.log('📡 Realtime event:', payload.eventType);
@@ -971,8 +972,8 @@ async function makeStickyDefaults(){
 }
 
 async function loadAllMessages(){
-  if(!supabase) return;
-  var { data, error } = await supabase
+  if(!sb) return;
+  var { data, error } = await sb
     .from('messages')
     .select('*')
     .order('created_at', { ascending: false });
@@ -995,9 +996,9 @@ async function postMsg(){
   b.prepend(makeSticky(tempMsg, tempMsg.id));
 
   // Save to Supabase (visible to ALL users)
-  if(supabase){
+  if(sb){
     try{
-      var { data, error } = await supabase
+      var { data, error } = await sb
         .from('messages')
         .insert([{ name: name, text: text, color: color, rotation: r }])
         .select();
