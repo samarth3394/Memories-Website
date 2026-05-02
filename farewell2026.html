@@ -6,23 +6,15 @@
 <title>Farewell 2026 🎓 | Engineering Farewell</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-  var db = null;
+  var SUPABASE_URL = 'https://jwedkjdqnecqhqxrfprp.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_mvbEdpP1G9Yhf1cttpzPGg_UDheWv8a';
+  var supabase = null;
   try {
-    firebase.initializeApp({
-      apiKey: "AIzaSyCqnN84vdHNlq-l0LgOmZL5e1WCcjKzTqw",
-      authDomain: "farewell2026-msg.firebaseapp.com",
-      databaseURL: "https://farewell2026-msg-default-rtdb.firebaseio.com",
-      projectId: "farewell2026-msg",
-      storageBucket: "farewell2026-msg.firebasestorage.app",
-      messagingSenderId: "190136997055",
-      appId: "1:190136997055:web:4145192281627a8edce20a",
-      measurementId: "G-YNYWX93NQ6"
-    });
-    db = firebase.database();
-  } catch(e) { console.warn('Firebase init failed:', e); }
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('✅ Supabase initialized successfully');
+  } catch(e) { console.error('❌ Supabase init FAILED:', e); }
 </script>
 <style>
 /* ===================================
@@ -913,26 +905,25 @@ function closeVideo(){
 }
 
 /* ═══════════════════════════════════════
-   MESSAGES
+   MESSAGES (Supabase powered)
 ═══════════════════════════════════════ */
-const DEFAULTS=[];
 
 function makeSticky(m, key){
   const d=document.createElement('div');
-  d.className=`sticky ${m.color}`;d.style.setProperty('--r',m.r||'0deg');
+  d.className=`sticky ${m.color}`;d.style.setProperty('--r',m.rotation||m.r||'0deg');
   if(key) d.dataset.key = key;
   d.innerHTML=`<button class="remove-msg-btn" onclick="deleteMsg(this.parentElement)" title="Delete message">×</button><p>${m.text}</p><div class="sticky-by">— ${m.name}</div>`;
   return d;
 }
 
-function deleteMsg(el){
+async function deleteMsg(el){
   const key = el.dataset.key;
-  if(key && db){
-    try{ db.ref('messages/'+key).remove(); }catch(e){}
+  if(key && supabase){
+    try{
+      await supabase.from('messages').delete().eq('id', key);
+      console.log('🗑️ Message deleted from Supabase');
+    }catch(e){ console.error('Delete error:', e); }
   }
-  var saved = JSON.parse(localStorage.getItem('farewell_messages')||'[]');
-  saved = saved.filter(function(m){ return m.key !== key; });
-  localStorage.setItem('farewell_messages', JSON.stringify(saved));
   el.remove();
 }
 
@@ -940,78 +931,86 @@ function renderMessages(msgs){
   var b=document.getElementById('stickyBoard');
   if(!b) return;
   b.innerHTML='';
-  msgs.forEach(function(m){ b.appendChild(makeSticky(m, m.key)); });
+  msgs.forEach(function(m){ b.appendChild(makeSticky(m, m.id || m.key)); });
 }
 
-function makeStickyDefaults(){
-  // Load from localStorage FIRST (always works, even offline)
-  var saved=JSON.parse(localStorage.getItem('farewell_messages')||'[]');
-  renderMessages(saved);
+async function makeStickyDefaults(){
+  if(!supabase){
+    console.error('❌ Supabase not initialized!');
+    return;
+  }
+  console.log('🔄 Loading messages from Supabase...');
+  try{
+    var { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if(error){
+      console.error('❌ Supabase read error:', error.message);
+      return;
+    }
+    console.log('✅ Messages loaded from Supabase:', data ? data.length : 0);
+    if(data && data.length > 0){
+      renderMessages(data);
+    }
 
-  // Also try Firebase sync — merge Firebase data with local data
-  if(db){
-    try{
-      db.ref('messages').orderByChild('timestamp').on('value', function(snap){
-        var localMsgs=JSON.parse(localStorage.getItem('farewell_messages')||'[]');
-        if(snap.exists()){
-          var firebaseMsgs=[];
-          snap.forEach(function(child){
-            var m=child.val();
-            m.key=child.key;
-            firebaseMsgs.push(m);
-          });
-          firebaseMsgs.reverse();
-          
-          // Merge: keep local-only messages + Firebase messages (avoid duplicates)
-          var firebaseKeys={};
-          firebaseMsgs.forEach(function(m){ if(m.key) firebaseKeys[m.key]=true; });
-          var localOnly=localMsgs.filter(function(m){ 
-            return m.key && m.key.indexOf('local_')===0 && !firebaseKeys[m.key]; 
-          });
-          var merged=localOnly.concat(firebaseMsgs);
-          merged.sort(function(a,b){ return (b.timestamp||0)-(a.timestamp||0); });
-          
-          localStorage.setItem('farewell_messages', JSON.stringify(merged));
-          renderMessages(merged);
-        }
-        // If Firebase is empty, DO NOT touch localStorage - keep local messages
+    // Real-time subscription — new messages appear instantly for ALL users
+    supabase
+      .channel('messages-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, function(payload){
+        console.log('📡 Realtime event:', payload.eventType);
+        // Reload all messages on any change
+        loadAllMessages();
+      })
+      .subscribe(function(status){
+        console.log('📡 Realtime subscription:', status);
       });
-    }catch(e){ console.warn('Firebase sync error:', e); }
+
+  }catch(e){ console.error('❌ Supabase error:', e); }
+}
+
+async function loadAllMessages(){
+  if(!supabase) return;
+  var { data, error } = await supabase
+    .from('messages')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if(!error && data){
+    renderMessages(data);
   }
 }
 
-function postMsg(){
+async function postMsg(){
   var name=document.getElementById('mName').value.trim()||'Anonymous 💌';
   var text=document.getElementById('mText').value.trim();
   var color=document.getElementById('mColor').value;
   if(!text){toast('Please write something ✏️');return;}
   var rots=['-2deg','-1.2deg','0deg','1deg','2deg'];
   var r=rots[Math.floor(Math.random()*rots.length)];
-  var msgData={name:name,text:text,color:color,r:r,timestamp:Date.now(),key:'local_'+Date.now()};
-  
-  // ALWAYS save to localStorage first
-  var saved=JSON.parse(localStorage.getItem('farewell_messages')||'[]');
-  saved.unshift(msgData);
-  localStorage.setItem('farewell_messages', JSON.stringify(saved));
-  
-  // Show on screen immediately
-  var b=document.getElementById('stickyBoard');
-  b.prepend(makeSticky(msgData, msgData.key));
 
-  // Also push to Firebase and update local key
-  if(db){
+  // Show on screen immediately (optimistic UI)
+  var tempMsg={name:name,text:text,color:color,rotation:r,id:'temp_'+Date.now()};
+  var b=document.getElementById('stickyBoard');
+  b.prepend(makeSticky(tempMsg, tempMsg.id));
+
+  // Save to Supabase (visible to ALL users)
+  if(supabase){
     try{
-      var newRef=db.ref('messages').push();
-      var localKey = msgData.key;
-      newRef.set({name:name,text:text,color:color,r:r,timestamp:msgData.timestamp}, function(err){
-        if(!err){
-          // Update localStorage key to match Firebase key
-          var s=JSON.parse(localStorage.getItem('farewell_messages')||'[]');
-          s.forEach(function(m){ if(m.key===localKey) m.key=newRef.key; });
-          localStorage.setItem('farewell_messages', JSON.stringify(s));
-        }
-      });
-    }catch(e){}
+      var { data, error } = await supabase
+        .from('messages')
+        .insert([{ name: name, text: text, color: color, rotation: r }])
+        .select();
+      
+      if(error){
+        console.error('❌ Supabase insert error:', error.message);
+        toast('Error posting message ❌ - ' + error.message);
+        return;
+      }
+      console.log('✅ Message saved to Supabase!', data);
+    }catch(e){
+      console.error('❌ Post error:', e);
+    }
   }
   
   document.getElementById('mName').value='';
