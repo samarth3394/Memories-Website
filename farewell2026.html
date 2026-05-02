@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farewell 2026 🎓 | Engineering Farewell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+  var db = null;
+  try {
+    firebase.initializeApp({
+      apiKey: "AIzaSyCqnN84vdHNlq-l0LgOmZL5e1WCcjKzTqw",
+      authDomain: "farewell2026-msg.firebaseapp.com",
+      databaseURL: "https://farewell2026-msg-default-rtdb.firebaseio.com",
+      projectId: "farewell2026-msg",
+      storageBucket: "farewell2026-msg.firebasestorage.app",
+      messagingSenderId: "190136997055",
+      appId: "1:190136997055:web:4145192281627a8edce20a",
+      measurementId: "G-YNYWX93NQ6"
+    });
+    db = firebase.database();
+  } catch(e) { console.warn('Firebase init failed:', e); }
+</script>
+<style>
+/* ===================================
+   ROOT & RESET
+=================================== */
+:root {
+  --gold: #c9a84c;
+  --gold-light: #f0d080;
+  --cream: #f5f0e8;
+  --dark: #08080f;
+  --dark2: #10101a;
+  --dark3: #18182a;
+  --glass: rgba(255,255,255,0.07);
+  --glass-b: rgba(255,255,255,0.12);
+  --font-d: 'Cormorant Garamond', Georgia, serif;
+  --font-b: 'DM Sans', system-ui, sans-serif;
+  --ease: cubic-bezier(0.25,0.46,0.45,0.94);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--dark);color:var(--cream);font-family:var(--font-b);overflow-x:hidden}
+img{display:block;max-width:100%}
+button{cursor:pointer;font-family:var(--font-b)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:rgba(201,168,76,.35);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+.hidden{display:none!important}
+
+/* ===================================
+   LANDING
+=================================== */
+#landing{
+  position:relative;width:100vw;height:100vh;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.bg-wrap{position:absolute;inset:0;z-index:0}
+.bg-img{
+  width:100%;height:100%;object-fit:cover;
+  filter:blur(7px) brightness(.65) saturate(.8);
+  transform:scale(1.08);animation:slowZoom 24s ease-in-out infinite alternate;
+}
+@keyframes slowZoom{from{transform:scale(1.08)}to{transform:scale(1.16)}}
+.bg-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(5,5,20,.5) 0%,rgba(5,5,20,.7) 60%,rgba(5,5,20,.92) 100%);
+}
+.landing-center{position:relative;z-index:2;padding:24px;width:100%}
+
+/* Glass Card */
+.glass-card{
+  background:rgba(255,255,255,.065);
+  backdrop-filter:blur(22px) saturate(1.3);
+  -webkit-backdrop-filter:blur(22px) saturate(1.3);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:28px;
+  padding:40px 48px;
+  text-align:center;
+  max-width:500px;margin:0 auto;
+  box-shadow:0 24px 90px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.16);
+  animation:cardIn 1.3s var(--ease) both;
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(44px) scale(.95)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.cap-icon{font-size:56px;display:block;margin-bottom:18px;animation:float 3.5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.main-title{
+  font-family:var(--font-d);font-size:clamp(52px,9vw,78px);
+  font-weight:300;letter-spacing:3px;line-height:1;color:#fff;margin-bottom:16px;
+}
+.main-title .gold{color:var(--gold)}
+.subtitle{
+  font-family:var(--font-d);font-size:clamp(17px,2.8vw,22px);
+  font-style:italic;color:rgba(255,255,255,.72);margin-bottom:14px;font-weight:300;
+}
+.tagline{font-size:14px;color:rgba(255,255,255,.45);line-height:1.8;margin-bottom:40px}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--gold),#9a7228);
+  color:#06060f;border:none;padding:17px 40px;border-radius:50px;
+  font-size:15px;font-weight:500;letter-spacing:.5px;
+  transition:all .35s var(--ease);
+  box-shadow:0 4px 28px rgba(201,168,76,.45);
+}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(201,168,76,.65);background:linear-gradient(135deg,var(--gold-light),var(--gold))}
+.cta-btn svg{transition:transform .3s var(--ease)}
+.cta-btn:hover svg{transform:translateX(4px)}
+.batch-info{margin-top:26px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.28)}
+.scroll-hint{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  z-index:2;font-size:11px;letter-spacing:2.5px;color:rgba(255,255,255,.25);
+  animation:nudge 2.2s ease-in-out infinite;
+}
+@keyframes nudge{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(9px)}}
+
+/* Stars BG decoration */
+.stars{position:absolute;inset:0;z-index:1;pointer-events:none}
+.star{
+  position:absolute;border-radius:50%;background:#fff;
+  animation:twinkle var(--dur,3s) ease-in-out infinite;
+  opacity:0;
+}
+@keyframes twinkle{0%,100%{opacity:0}50%{opacity:var(--op,.6)}}
+
+/* ===================================
+   NAVBAR
+=================================== */
+#navbar{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  display:flex;align-items:center;gap:20px;
+  padding:13px 44px;
+  background:rgba(8,8,15,.88);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:all .4s var(--ease);
+}
+.nav-logo{
+  font-family:var(--font-d);font-size:24px;color:var(--gold);
+  font-style:italic;margin-right:auto;letter-spacing:1px;white-space:nowrap;
+}
+.nav-links{display:flex;gap:26px}
+.nav-links a{
+  color:rgba(255,255,255,.55);text-decoration:none;font-size:13px;
+  letter-spacing:.4px;transition:color .25s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;
+  background:var(--gold);transform:scaleX(0);transition:transform .3s var(--ease);
+}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.music-btn{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);
+  color:rgba(255,255,255,.6);padding:8px 18px;border-radius:20px;font-size:13px;
+  transition:all .3s;white-space:nowrap;
+}
+.music-btn.on{background:rgba(201,168,76,.18);border-color:var(--gold);color:var(--gold)}
+.hamburger{display:none;font-size:22px;color:rgba(255,255,255,.65);background:none;border:none;padding:4px}
+.mobile-nav{
+  display:none;position:fixed;top:58px;left:0;right:0;z-index:998;
+  background:rgba(8,8,15,.97);backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  padding:20px 44px 28px;flex-direction:column;gap:22px;
+}
+.mobile-nav.open{display:flex}
+.mobile-nav a{color:rgba(255,255,255,.6);text-decoration:none;font-size:16px;transition:color .2s}
+.mobile-nav a:hover{color:var(--gold)}
+
+/* ===================================
+   SECTIONS
+=================================== */
+.section{padding:110px 60px;position:relative}
+.dark-section{background:var(--dark2)}
+.section-header{text-align:center;margin-bottom:66px}
+.section-tag{
+  display:inline-block;font-size:10.5px;letter-spacing:3.5px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:14px;opacity:.85;
+}
+.section-header h2{
+  font-family:var(--font-d);font-size:clamp(38px,5.5vw,58px);
+  font-weight:300;color:#fff;line-height:1.05;margin-bottom:16px;
+}
+.section-header h2 em{color:var(--gold);font-style:italic}
+.section-header p{color:rgba(255,255,255,.42);font-size:15px;max-width:500px;margin:0 auto;line-height:1.8}
+
+/* ===================================
+   GALLERY
+=================================== */
+.year-tabs{display:flex;justify-content:center;gap:10px;margin-bottom:44px;flex-wrap:wrap}
+.tab-btn{
+  padding:9px 22px;border-radius:24px;
+  border:1px solid rgba(255,255,255,.14);background:transparent;
+  color:rgba(255,255,255,.5);font-size:13.5px;transition:all .3s var(--ease);
+}
+.tab-btn:hover,.tab-btn.active{
+  background:var(--gold);border-color:var(--gold);
+  color:#07070f;font-weight:500;transform:translateY(-2px);
+}
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:14px;max-width:1300px;margin:0 auto;
+}
+.gallery-item{
+  position:relative;border-radius:14px;overflow:hidden;
+  aspect-ratio:1/1;cursor:pointer;transition:all .5s var(--ease);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
+}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease),filter .4s}
+.gallery-item:hover img{transform:scale(1.08);filter:brightness(1.15)}
+.gallery-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:22px 16px 16px;
+  background:linear-gradient(transparent,rgba(0,0,0,.88));
+  transform:translateY(62%);transition:transform .4s var(--ease);
+}
+.gallery-item:hover .gallery-caption{transform:translateY(0)}
+.gallery-caption h4{font-family:var(--font-d);font-size:17px;color:#fff;font-style:italic;margin-bottom:4px}
+.gallery-caption span{font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.gallery-item:hover{box-shadow:0 16px 60px rgba(0,0,0,.7);border-color:rgba(201,168,76,.3)}
+.gallery-featured{
+  grid-column:1 / -1;
+  aspect-ratio:unset;
+  height:500px;
+  border:2px solid rgba(201,168,76,.25);
+  box-shadow:0 8px 40px rgba(201,168,76,.15);
+  border-radius:20px;
+  margin-bottom:10px;
+}
+
+/* ===================================
+   VIDEOS
+=================================== */
+.video-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr;
+  gap:20px;max-width:1200px;margin:0 auto;
+}
+.video-card{
+  border-radius:18px;overflow:hidden;background:var(--dark3);
+  border:1px solid rgba(255,255,255,.08);transition:all .4s var(--ease);
+}
+.video-card:hover{transform:translateY(-8px);border-color:rgba(201,168,76,.28);box-shadow:0 22px 70px rgba(0,0,0,.55)}
+.video-thumb{position:relative;overflow:hidden;height:190px}
+.video-card.featured .video-thumb{height:270px}
+.video-thumb img{width:100%;height:100%;object-fit:cover;opacity:.65;transition:opacity .4s}
+.video-card:hover .video-thumb img{opacity:.85}
+.play-btn{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(255,255,255,.14);backdrop-filter:blur(12px);
+  border:2px solid rgba(255,255,255,.28);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;color:#fff;z-index:2;transition:all .3s var(--ease);
+}
+.video-card:hover .play-btn{background:var(--gold);border-color:var(--gold);color:#06060f;transform:translate(-50%,-50%) scale(1.12)}
+.video-info{padding:18px 20px 22px}
+.video-tag{font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:7px}
+.video-info h3{font-family:var(--font-d);font-size:19px;color:#fff;margin-bottom:5px}
+.video-info p{font-size:13px;color:rgba(255,255,255,.42)}
+/* Modal */
+.v-modal{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+}
+.v-overlay{position:absolute;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);cursor:pointer}
+.v-inner{
+  position:relative;z-index:1;
+  width:min(920px,95vw);height:min(518px,56vw);
+  background:#000;border-radius:18px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.1);
+  animation:modalIn .35s var(--ease) both;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.v-close{
+  position:absolute;top:-46px;right:0;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  color:#fff;width:38px;height:38px;border-radius:50%;font-size:16px;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.v-close:hover{background:rgba(255,255,255,.2)}
+
+/* ===================================
+   MESSAGE WALL
+=================================== */
+.msg-form{
+  background:rgba(255,255,255,.05);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.1);border-radius:22px;
+  padding:34px 42px;max-width:620px;margin:0 auto 54px;
+  box-shadow:0 12px 50px rgba(0,0,0,.45);
+}
+.msg-form h3{font-family:var(--font-d);font-size:26px;color:#fff;font-style:italic;margin-bottom:22px}
+.msg-form input,.msg-form textarea,.msg-form select{
+  width:100%;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.11);border-radius:12px;
+  padding:12px 16px;color:rgba(255,255,255,.85);
+  font-family:var(--font-b);font-size:14px;margin-bottom:14px;
+  outline:none;transition:border-color .3s;
+}
+.msg-form input:focus,.msg-form textarea:focus{border-color:var(--gold)}
+.msg-form textarea{height:100px;resize:vertical}
+.msg-form select option{background:#1a1a2a}
+.form-row{display:flex;gap:12px;align-items:stretch}
+.form-row select{flex:0 0 auto;width:auto;margin:0}
+.post-btn{
+  flex:1;background:linear-gradient(135deg,var(--gold),#9a7228);
+  color:#06060f;border:none;padding:12px 24px;border-radius:50px;
+  font-size:14px;font-weight:500;transition:all .3s var(--ease);
+}
+.post-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,.45)}
+.sticky-board{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:20px;max-width:1200px;margin:0 auto;
+}
+.sticky{
+  padding:24px 20px;border-radius:4px 18px 18px 4px;border-left:4px solid;
+  font-size:14px;line-height:1.75;color:rgba(255,255,255,.82);
+  position:relative;transform:rotate(var(--r,0deg));
+  transition:transform .35s var(--ease),box-shadow .35s;
+  animation:stickyIn .45s var(--ease) both;
+}
+@keyframes stickyIn{from{opacity:0;transform:scale(.8) rotate(var(--r,0deg))}to{opacity:1;transform:scale(1) rotate(var(--r,0deg))}}
+.sticky:hover{transform:scale(1.05) rotate(0deg)!important;z-index:10;box-shadow:0 14px 50px rgba(0,0,0,.6)}
+.sticky.yellow{background:#1e1c0f;border-color:#f5d020}
+.sticky.pink{background:#1e0f14;border-color:#ff8fa3}
+.sticky.blue{background:#0f191e;border-color:#64b5f6}
+.sticky.green{background:#0f1e14;border-color:#69db8f}
+.sticky.purple{background:#190f1e;border-color:#b086ff}
+.sticky-by{margin-top:13px;font-size:11.5px;color:rgba(255,255,255,.35);letter-spacing:.5px}
+.remove-msg-btn{position:absolute;top:8px;right:10px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:18px;cursor:pointer;transition:color 0.2s}
+.remove-msg-btn:hover{color:#ff4d4d}
+/* ===================================
+   AWARDS
+=================================== */
+.awards-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));
+  gap:24px;max-width:1220px;margin:0 auto;
+}
+.award-card{
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;padding:34px 26px;text-align:center;
+  transition:all .4s var(--ease);position:relative;overflow:hidden;
+}
+.award-card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,rgba(201,168,76,.1) 0%,transparent 65%);
+  opacity:0;transition:opacity .4s;
+}
+.award-card:hover{transform:translateY(-9px);border-color:rgba(201,168,76,.3);box-shadow:0 20px 60px rgba(0,0,0,.55)}
+.award-card:hover::after{opacity:1}
+.award-emoji{font-size:54px;display:block;margin-bottom:18px}
+.award-badge{
+  display:inline-block;background:rgba(201,168,76,.13);
+  border:1px solid rgba(201,168,76,.3);color:var(--gold);
+  font-size:10px;letter-spacing:1.8px;text-transform:uppercase;
+  padding:4px 14px;border-radius:20px;margin-bottom:14px;
+}
+.award-title{font-family:var(--font-d);font-size:21px;font-style:italic;color:var(--gold);margin-bottom:8px}
+.award-name{font-size:16px;font-weight:500;color:#fff;margin-bottom:8px}
+.award-desc{font-size:13px;color:rgba(255,255,255,.42);line-height:1.65}
+
+/* ===================================
+   TIMELINE
+=================================== */
+.tl-wrap{max-width:820px;margin:0 auto;position:relative;padding:10px 0}
+.tl-wrap::before{
+  content:'';position:absolute;left:50%;top:0;bottom:0;
+  width:1px;transform:translateX(-50%);
+  background:linear-gradient(to bottom,transparent,rgba(201,168,76,.35) 8%,rgba(201,168,76,.35) 92%,transparent);
+}
+.tl-item{
+  display:grid;grid-template-columns:1fr 44px 1fr;
+  align-items:start;margin-bottom:52px;
+  opacity:0;transform:translateY(28px);transition:opacity .65s,transform .65s;
+}
+.tl-item.show{opacity:1;transform:translateY(0)}
+.tl-item:nth-child(odd) .tl-box{grid-column:1;text-align:right;padding-right:0}
+.tl-item:nth-child(odd) .tl-center{grid-column:2}
+.tl-item:nth-child(odd) .tl-empty{grid-column:3}
+.tl-item:nth-child(even) .tl-empty{grid-column:1}
+.tl-item:nth-child(even) .tl-center{grid-column:2}
+.tl-item:nth-child(even) .tl-box{grid-column:3;text-align:left;padding-left:0}
+.tl-box{
+  background:rgba(0,0,0,.65);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:16px;padding:20px 24px;transition:border-color .3s, background .3s;
+}
+.tl-box:hover{border-color:rgba(201,168,76,.4);background:rgba(0,0,0,.8);}
+.tl-date{font-size:10.5px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:7px}
+.tl-box h4{font-family:var(--font-d);font-size:20px;color:#fff;margin-bottom:6px}
+.tl-box p{font-size:13px;color:rgba(255,255,255,.47);line-height:1.65}
+.tl-center{display:flex;align-items:flex-start;justify-content:center;padding-top:16px}
+.tl-icon{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--dark2);border:1px solid rgba(201,168,76,.35);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;box-shadow:0 0 0 5px rgba(201,168,76,.12);
+  position:relative;z-index:2;
+}
+.tl-empty{}
+
+/* ===================================
+   PROFILES
+=================================== */
+.profiles-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:24px;max-width:1220px;margin:0 auto;
+}
+.p-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;overflow:hidden;transition:all .4s var(--ease);
+}
+.p-card:hover{transform:translateY(-9px);border-color:rgba(201,168,76,.3);box-shadow:0 18px 55px rgba(0,0,0,.55)}
+.p-photo-wrap{overflow:hidden;aspect-ratio:1}
+.p-photo{width:100%;height:100%;object-fit:cover;transition:transform .55s var(--ease),filter .4s;filter:grayscale(25%)}
+.p-card:hover .p-photo{transform:scale(1.08);filter:grayscale(0%)}
+.p-info{padding:18px 16px 22px}
+.p-nick{font-family:var(--font-d);font-size:18.5px;font-style:italic;color:var(--gold);margin-bottom:5px}
+.p-name{font-size:12.5px;color:rgba(255,255,255,.52);margin-bottom:10px}
+.p-bio{font-size:12px;color:rgba(255,255,255,.38);line-height:1.65;margin-bottom:10px}
+.p-future{font-size:11px;color:var(--gold);opacity:.68}
+
+/* ===================================
+   POLL SECTION
+=================================== */
+#poll{background:var(--dark)}
+.poll-wrap{max-width:680px;margin:0 auto}
+.poll-card{
+  background:rgba(255,255,255,.06);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.1);border-radius:24px;
+  padding:50px 52px;box-shadow:0 10px 50px rgba(0,0,0,.45);
+}
+.poll-q{
+  font-family:var(--font-d);font-size:28px;color:#fff;
+  margin-bottom:34px;text-align:center;line-height:1.4;
+}
+.poll-opts{display:flex;flex-direction:column;gap:13px;margin-bottom:28px}
+.poll-opt{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:15px 20px;color:rgba(255,255,255,.75);
+  font-size:15px;text-align:left;transition:all .3s var(--ease);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.poll-opt:hover:not(.voted){background:rgba(201,168,76,.1);border-color:var(--gold);color:#fff}
+.poll-opt.selected{background:rgba(201,168,76,.16);border-color:var(--gold);color:var(--gold)}
+.poll-bar-wrap{flex:0 0 140px;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;display:none}
+.poll-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:3px;width:0;transition:width .7s var(--ease)}
+.poll-pct{font-size:12px;color:rgba(255,255,255,.45);min-width:34px;text-align:right;display:none}
+.poll-total{text-align:center;font-size:13px;color:rgba(255,255,255,.3);letter-spacing:.5px}
+
+/* ===================================
+   QUIZ
+=================================== */
+.quiz-shell{
+  background:rgba(255,255,255,.06);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.1);border-radius:24px;
+  padding:50px 52px;max-width:720px;margin:0 auto;
+  box-shadow:0 10px 50px rgba(0,0,0,.45);
+}
+.quiz-prog-bar{height:3px;background:rgba(255,255,255,.09);border-radius:3px;margin-bottom:22px;overflow:hidden}
+.quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:3px;transition:width .55s var(--ease)}
+.quiz-step{font-size:11px;letter-spacing:2px;text-align:center;color:rgba(255,255,255,.3);margin-bottom:20px}
+.quiz-q{font-family:var(--font-d);font-size:26px;color:#fff;text-align:center;margin-bottom:34px;line-height:1.4}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px}
+.quiz-opt{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:13px;padding:16px 18px;color:rgba(255,255,255,.72);
+  font-size:14.5px;text-align:left;transition:all .3s var(--ease);
+}
+.quiz-opt:hover{background:rgba(201,168,76,.1);border-color:var(--gold);color:#fff}
+.quiz-opt.correct{background:rgba(100,219,140,.14);border-color:#69db8f;color:#69db8f}
+.quiz-opt.wrong{background:rgba(255,100,100,.14);border-color:#ff6b6b;color:#ff6b6b}
+.quiz-score-line{text-align:center;font-size:13px;color:rgba(255,255,255,.35);letter-spacing:.5px}
+.quiz-result{text-align:center;padding:16px}
+.quiz-big{font-family:var(--font-d);font-size:80px;color:var(--gold);line-height:1;margin-bottom:14px}
+.quiz-msg{color:rgba(255,255,255,.55);font-size:18px;margin-bottom:30px;line-height:1.5}
+
+/* ===================================
+   ENDING
+=================================== */
+#ending{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:100px 40px;overflow:hidden;
+}
+.ending-bg-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(6px) brightness(.5) saturate(.7);transform:scale(1.06);
+}
+.ending-overlay{position:absolute;inset:0;background:rgba(5,5,18,.78)}
+.ending-inner{position:relative;z-index:2;text-align:center;max-width:700px;margin:0 auto}
+.ending-glass{
+  background:rgba(255,255,255,.065);backdrop-filter:blur(26px);
+  border:1px solid rgba(255,255,255,.12);border-radius:30px;
+  padding:64px 80px;box-shadow:0 24px 90px rgba(0,0,0,.7);
+  animation:endingIn 1.2s var(--ease) both;
+}
+@keyframes endingIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.poem{
+  font-family:var(--font-d);font-size:17.5px;font-style:italic;
+  color:rgba(255,255,255,.58);line-height:2.1;margin-bottom:38px;
+}
+.poem em{color:var(--gold-light);font-style:normal;font-weight:400}
+.ending-title{font-family:var(--font-d);font-size:clamp(38px,5.5vw,56px);font-weight:300;color:#fff;margin-bottom:12px}
+.ending-sub{color:rgba(255,255,255,.36);font-size:13px;letter-spacing:2.5px;margin-bottom:30px}
+.caps-row{font-size:34px;letter-spacing:10px;margin-bottom:36px;animation:capsPulse 2.5s ease-in-out infinite}
+@keyframes capsPulse{0%,100%{opacity:.55}50%{opacity:1}}
+#confetti-canvas{position:absolute;inset:0;pointer-events:none;z-index:3}
+
+/* ===================================
+   FADE-IN SCROLL
+=================================== */
+.fi{opacity:0;transform:translateY(32px);transition:opacity .7s,transform .7s}
+.fi.vis{opacity:1;transform:translateY(0)}
+
+/* ===================================
+   TOAST
+=================================== */
+.toast{
+  position:fixed;bottom:30px;left:50%;
+  transform:translateX(-50%) translateY(90px);
+  background:rgba(201,168,76,.92);color:#07070f;
+  padding:12px 30px;border-radius:50px;font-size:14px;font-weight:500;
+  z-index:10001;transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ===================================
+   LIGHTBOX
+=================================== */
+.lb{
+  position:fixed;inset:0;z-index:10000;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.97);animation:fadeIn .3s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.lb img{max-width:92vw;max-height:88vh;border-radius:14px;object-fit:contain}
+.lb-close{
+  position:absolute;top:22px;right:26px;font-size:28px;
+  color:rgba(255,255,255,.45);background:none;border:none;
+  transition:color .2s;
+}
+.lb-close:hover{color:#fff}
+.lb-caption{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  font-family:var(--font-d);font-size:18px;font-style:italic;
+  color:rgba(255,255,255,.6);white-space:nowrap;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+@media(max-width:960px){
+  .section{padding:80px 28px}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-featured{height:350px}
+  .video-grid{grid-template-columns:1fr}
+  .video-card.featured .video-thumb{height:220px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .poll-card,.quiz-shell{padding:36px 28px}
+  .msg-form{padding:28px 24px}
+  .ending-glass{padding:44px 30px}
+}
+@media(max-width:640px){
+  .glass-card{padding:36px 22px}
+  .gallery-grid{grid-template-columns:1fr;gap:10px}
+  .gallery-featured{height:280px}
+  .awards-grid{grid-template-columns:1fr 1fr}
+  .profiles-grid{grid-template-columns:1fr 1fr}
+  .quiz-opts{grid-template-columns:1fr}
+  .tl-wrap::before{left:18px}
+  .tl-item{display:block;padding-left:50px;position:relative;margin-bottom:36px}
+  .tl-center{position:absolute;left:0;top:12px;padding:0}
+  .tl-empty{display:none}
+  .tl-box{text-align:left!important}
+  .poem{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LANDING ══════════════ -->
+<section id="landing">
+  <div class="bg-wrap">
+    <img class="bg-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1800&q=85" alt="Group Photo">
+    <div class="bg-overlay"></div>
+  </div>
+  <div class="stars" id="stars"></div>
+  <div class="landing-center">
+    <div class="glass-card">
+      <span class="cap-icon">🎓</span>
+      <h1 class="main-title">Farewell <span class="gold">2026</span></h1>
+      <p class="subtitle">4 Years of Memories, Friendship &amp; Journey</p>
+      <p class="tagline">
+        From orientation chaos to this bittersweet goodbye —<br>
+        you made every single moment worth it.
+      </p>
+      <button class="cta-btn" onclick="enterMemories()">
+        Enter Memories
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <div class="batch-info">Batch of 2022–2026 &nbsp;·&nbsp; AI & ML</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main id="mainContent" class="hidden">
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Farewell '26</div>
+  <div class="nav-links">
+    <a href="#gallery" onclick="closeNav()">Gallery</a>
+    <a href="#videos" onclick="closeNav()">Videos</a>
+    <a href="#messages" onclick="closeNav()">Messages</a>
+    <a href="#timeline" onclick="closeNav()">Timeline</a>
+    <a href="#poll" onclick="closeNav()">Poll</a>
+    <a href="#ending" onclick="closeNav()">Goodbye</a>
+  </div>
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵 Music</button>
+  <button class="hamburger" onclick="toggleNav()">☰</button>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#gallery" onclick="closeNav()">Gallery</a>
+  <a href="#videos" onclick="closeNav()">Videos</a>
+  <a href="#messages" onclick="closeNav()">Messages</a>
+  <a href="#timeline" onclick="closeNav()">Timeline</a>
+  <a href="#poll" onclick="closeNav()">Poll</a>
+  <a href="#ending" onclick="closeNav()">Goodbye</a>
+</div>
+
+<!-- ══ 01 GALLERY ══ -->
+<section id="gallery" class="section">
+  <div class="section-header fi">
+
+    <h2><em>MEMORIES</em></h2>
+    <p>"We didn't realize we were making memories, we just knew we were having fun."</p>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<!-- ══ 02 VIDEOS ══ -->
+<section id="videos" class="section dark-section">
+  <div class="section-header fi">
+
+    <h2>Video <em>Memories</em></h2>
+    <p>Relive the moments that made us laugh, cry, and everything in between</p>
+  </div>
+  <div class="video-grid">
+    <div class="video-card featured fi">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="Farewell Ceremony">
+        <div class="play-btn" onclick="openVideo('dQw4w9WgXcQ')">▶</div>
+      </div>
+      <div class="video-info">
+        <span class="video-tag">Featured</span>
+        <h3>Farewell Ceremony 2026</h3>
+        <p>The night we'll never forget</p>
+      </div>
+    </div>
+    <div class="video-card fi">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/jNQXAC9IVRw/hqdefault.jpg" alt="Funny Moments">
+        <div class="play-btn" onclick="openVideo('jNQXAC9IVRw')">▶</div>
+      </div>
+      <div class="video-info">
+        <h3>Funny Moments</h3>
+        <p>Bloopers & chaos from 4 years</p>
+      </div>
+    </div>
+    <div class="video-card fi">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/ysz5S6PUM-U/hqdefault.jpg" alt="Speeches">
+        <div class="play-btn" onclick="openVideo('ysz5S6PUM-U')">▶</div>
+      </div>
+      <div class="video-info">
+        <h3>Farewell Speeches</h3>
+        <p>Words straight from the heart</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Video Modal -->
+<div class="v-modal hidden" id="vModal">
+  <div class="v-overlay" onclick="closeVideo()"></div>
+  <div class="v-inner">
+    <button class="v-close" onclick="closeVideo()">✕</button>
+    <iframe id="vFrame" width="100%" height="100%" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- ══ 03 MESSAGE WALL ══ -->
+<section id="messages" class="section">
+  <div class="section-header fi">
+
+    <h2>Message <em>Wall</em></h2>
+    <p>Words from juniors, friends &amp; the ones who love you most</p>
+  </div>
+  <div class="msg-form fi">
+    <h3>Leave a Message 💌</h3>
+    <input id="mName" type="text" placeholder="Your name (or stay anonymous ✨)">
+    <textarea id="mText" placeholder="Write your farewell message for the batch…"></textarea>
+    <div class="form-row">
+      <select id="mColor">
+        <option value="yellow">🟡 Sunny</option>
+        <option value="pink">🩷 Rose</option>
+        <option value="blue">🔵 Sky</option>
+        <option value="green">🟢 Sage</option>
+        <option value="purple">🟣 Lavender</option>
+      </select>
+      <button class="post-btn" onclick="postMsg()">Post Message ✉️</button>
+    </div>
+  </div>
+  <div class="sticky-board" id="stickyBoard"></div>
+</section>
+
+
+
+<!-- ══ 05 TIMELINE ══ -->
+<section id="timeline" class="section">
+  <div class="section-header fi">
+
+    <h2>Our <em>Journey</em></h2>
+    <p>From Day 1 to Farewell — every milestone that shaped us</p>
+  </div>
+  <div class="tl-wrap" id="tlWrap"></div>
+</section>
+
+
+
+<!-- ══ 07 POLL ══ -->
+<section id="poll" class="section">
+  <div class="section-header fi">
+
+    <h2>The <em>Poll</em></h2>
+    <p>Who gets your vote? Cast it now.</p>
+  </div>
+  <div class="poll-wrap fi">
+    <div class="poll-card">
+      <div class="poll-q" id="pollQ">🏆 Who is the most memorable person in the batch?</div>
+      <div class="poll-opts" id="pollOpts"></div>
+      <div class="poll-total" id="pollTotal">0 votes cast</div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ══ 09 ENDING ══ -->
+<section id="ending">
+  <img class="ending-bg-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1800&q=80" alt="Group">
+  <div class="ending-overlay"></div>
+  <div class="ending-inner">
+    <div class="ending-glass">
+      <div class="poem">
+        "We came as strangers, we leave as memories in each other's lives."
+      </div>
+      <h2 class="ending-title">Until We Meet Again 👋</h2>
+      <p class="ending-sub">Batch of 2022–2026 &nbsp;·&nbsp; Forever in our hearts</p>
+      <div class="caps-row">🎓🎓🎓🎓🎓</div>
+      <p style="font-family: var(--font-d); font-size: 20px; font-style: italic; color: var(--gold-light); margin-top: 20px; line-height: 1.6;">
+        "Every ending is just a new beginning in disguise.<br>Step into the future with courage, and let's make the next chapter even more beautiful."
+      </p>
+    </div>
+  </div>
+  <canvas id="confetti-canvas"></canvas>
+</section>
+
+</main>
+
+<!-- Background music (royalty-free) -->
+<audio id="bgAudio" loop>
+  <source src="farewell-music.mp4" type="audio/mp4">
+</audio>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════
+   STARS
+═══════════════════════════════════════ */
+(function(){
+  const c=document.getElementById('stars');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    const sz=Math.random()*2.5+.5;
+    s.style.cssText=`
+      width:${sz}px;height:${sz}px;
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      --dur:${Math.random()*4+2}s;--op:${Math.random()*.7+.2};
+      animation-delay:${Math.random()*5}s;
+    `;
+    c.appendChild(s);
+  }
+})();
+
+/* ═══════════════════════════════════════
+   LANDING → ENTER
+═══════════════════════════════════════ */
+function enterMemories(){
+  const land=document.getElementById('landing');
+  const main=document.getElementById('mainContent');
+  land.style.transition='opacity .8s ease,transform .8s ease';
+  land.style.opacity='0';land.style.transform='scale(1.04)';
+  
+  // Auto-play music on enter
+  try{
+    const a=document.getElementById('bgAudio');
+    const b=document.getElementById('musicBtn');
+    a.volume=.25;
+    a.play().then(()=>{
+      playing=true;
+      if(b){b.textContent='🔇 Pause';b.classList.add('on');}
+    }).catch(()=>{});
+  }catch(e){}
+
+  setTimeout(()=>{
+    land.style.display='none';
+    main.classList.remove('hidden');
+    main.style.opacity='0';main.style.transition='opacity .7s';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>main.style.opacity='1'));
+    initAll();
+  },780);
+}
+
+function initAll(){
+  try{ makeGallery(); }catch(e){}
+  try{ makeStickyDefaults(); }catch(e){}
+  try{ makeAwards(); }catch(e){}
+  try{ makeTimeline(); }catch(e){}
+  try{ makeProfiles(); }catch(e){}
+  try{ makePoll(); }catch(e){}
+  try{ makeQuiz(); }catch(e){}
+  try{ initScrollObs(); }catch(e){}
+}
+
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+function toggleNav(){document.getElementById('mobileNav').classList.toggle('open')}
+function closeNav(){document.getElementById('mobileNav').classList.remove('open')}
+
+/* ═══════════════════════════════════════
+   MUSIC
+═══════════════════════════════════════ */
+let playing=false;
+function toggleMusic(){
+  const a=document.getElementById('bgAudio');
+  const b=document.getElementById('musicBtn');
+  if(playing){a.pause();b.textContent='🎵 Music';b.classList.remove('on');}
+  else{a.volume=.25;a.play().catch(()=>{});b.textContent='🔇 Pause';b.classList.add('on');}
+  playing=!playing;
+}
+
+/* ═══════════════════════════════════════
+   GALLERY
+═══════════════════════════════════════ */
+const GALLERY=[{src:'group-photo.jpg',title:'Group Photo 🎓',featured:true}];
+for(let i=1;i<=39;i++){if(i===16) continue; GALLERY.push({src:`photos/${i}.jpeg`,title:`Memory ${i}`})}
+
+function makeGallery(){renderGallery()}
+
+function renderGallery(){
+  const g=document.getElementById('galleryGrid');
+  g.innerHTML=GALLERY.map(x=>`
+    <div class="gallery-item${x.featured?' gallery-featured':''} fi" onclick="openLB('${x.src}','${x.title}')">
+      <img src="${x.src}" alt="${x.title}" loading="lazy">
+      <div class="gallery-caption">
+        <h4>${x.title}</h4>
+      </div>
+    </div>`).join('');
+  setTimeout(()=>{
+    g.querySelectorAll('.fi').forEach((el,i)=>setTimeout(()=>el.classList.add('vis'),i*70));
+  },30);
+}
+
+/* ═══════════════════════════════════════
+   LIGHTBOX
+═══════════════════════════════════════ */
+function openLB(src,title){
+  const lb=document.createElement('div');
+  lb.className='lb';
+  lb.innerHTML=`<button class="lb-close" onclick="this.closest('.lb').remove()">✕</button>
+  <img src="${src}" alt="${title}">
+  <div class="lb-caption">${title}</div>`;
+  lb.addEventListener('click',e=>{if(e.target===lb)lb.remove();});
+  document.body.appendChild(lb);
+}
+
+/* ═══════════════════════════════════════
+   VIDEO
+═══════════════════════════════════════ */
+function openVideo(id){
+  document.getElementById('vFrame').src=`https://www.youtube.com/embed/${id}?autoplay=1`;
+  document.getElementById('vModal').classList.remove('hidden');
+}
+function closeVideo(){
+  document.getElementById('vFrame').src='';
+  document.getElementById('vModal').classList.add('hidden');
+}
+
+/* ═══════════════════════════════════════
+   MESSAGES
+═══════════════════════════════════════ */
+const DEFAULTS=[];
+
+function makeSticky(m, key){
+  const d=document.createElement('div');
+  d.className=`sticky ${m.color}`;d.style.setProperty('--r',m.r||'0deg');
+  if(key) d.dataset.key = key;
+  d.innerHTML=`<button class="remove-msg-btn" onclick="deleteMsg(this.parentElement)" title="Delete message">×</button><p>${m.text}</p><div class="sticky-by">— ${m.name}</div>`;
+  return d;
+}
+
+function deleteMsg(el){
+  const key = el.dataset.key;
+  if(key && db){
+    try{ db.ref('messages/'+key).remove(); }catch(e){}
+  }
+  var saved = JSON.parse(localStorage.getItem('farewell_messages')||'[]');
+  saved = saved.filter(function(m){ return m.key !== key; });
+  localStorage.setItem('farewell_messages', JSON.stringify(saved));
+  el.remove();
+}
+
+function renderMessages(msgs){
+  var b=document.getElementById('stickyBoard');
+  if(!b) return;
+  b.innerHTML='';
+  msgs.forEach(function(m){ b.appendChild(makeSticky(m, m.key)); });
+}
+
+function makeStickyDefaults(){
+  // Load from localStorage FIRST (always works, even offline)
+  var saved=JSON.parse(localStorage.getItem('farewell_messages')||'[]');
+  renderMessages(saved);
+
+  // Also try Firebase sync — merge Firebase data with local data
+  if(db){
+    try{
+      db.ref('messages').orderByChild('timestamp').on('value', function(snap){
+        var localMsgs=JSON.parse(localStorage.getItem('farewell_messages')||'[]');
+        if(snap.exists()){
+          var firebaseMsgs=[];
+          snap.forEach(function(child){
+            var m=child.val();
+            m.key=child.key;
+            firebaseMsgs.push(m);
+          });
+          firebaseMsgs.reverse();
+          
+          // Merge: keep local-only messages + Firebase messages (avoid duplicates)
+          var firebaseKeys={};
+          firebaseMsgs.forEach(function(m){ if(m.key) firebaseKeys[m.key]=true; });
+          var localOnly=localMsgs.filter(function(m){ 
+            return m.key && m.key.indexOf('local_')===0 && !firebaseKeys[m.key]; 
+          });
+          var merged=localOnly.concat(firebaseMsgs);
+          merged.sort(function(a,b){ return (b.timestamp||0)-(a.timestamp||0); });
+          
+          localStorage.setItem('farewell_messages', JSON.stringify(merged));
+          renderMessages(merged);
+        }
+        // If Firebase is empty, DO NOT touch localStorage - keep local messages
+      });
+    }catch(e){ console.warn('Firebase sync error:', e); }
+  }
+}
+
+function postMsg(){
+  var name=document.getElementById('mName').value.trim()||'Anonymous 💌';
+  var text=document.getElementById('mText').value.trim();
+  var color=document.getElementById('mColor').value;
+  if(!text){toast('Please write something ✏️');return;}
+  var rots=['-2deg','-1.2deg','0deg','1deg','2deg'];
+  var r=rots[Math.floor(Math.random()*rots.length)];
+  var msgData={name:name,text:text,color:color,r:r,timestamp:Date.now(),key:'local_'+Date.now()};
+  
+  // ALWAYS save to localStorage first
+  var saved=JSON.parse(localStorage.getItem('farewell_messages')||'[]');
+  saved.unshift(msgData);
+  localStorage.setItem('farewell_messages', JSON.stringify(saved));
+  
+  // Show on screen immediately
+  var b=document.getElementById('stickyBoard');
+  b.prepend(makeSticky(msgData, msgData.key));
+
+  // Also push to Firebase and update local key
+  if(db){
+    try{
+      var newRef=db.ref('messages').push();
+      var localKey = msgData.key;
+      newRef.set({name:name,text:text,color:color,r:r,timestamp:msgData.timestamp}, function(err){
+        if(!err){
+          // Update localStorage key to match Firebase key
+          var s=JSON.parse(localStorage.getItem('farewell_messages')||'[]');
+          s.forEach(function(m){ if(m.key===localKey) m.key=newRef.key; });
+          localStorage.setItem('farewell_messages', JSON.stringify(s));
+        }
+      });
+    }catch(e){}
+  }
+  
+  document.getElementById('mName').value='';
+  document.getElementById('mText').value='';
+  toast('Message posted! 💌');
+}
+
+/* ═══════════════════════════════════════
+   AWARDS
+═══════════════════════════════════════ */
+const AWARDS=[
+  {e:'😴',badge:'Certified Legend',title:'Best Bunk Master',name:'Rohit Joshi',desc:'Attended exactly enough lectures to pass. A tactical genius who turned absence into an art form.'},
+  {e:'⏰',badge:'Hall of Fame',title:'Always Late Legend',name:'Priya Nair',desc:'Never on time, always worth the wait. Could be late for her own farewell and still make an entrance.'},
+  {e:'📸',badge:'Social Icon',title:'Instagram Reel Machine',name:'Aryan Kapoor',desc:'Turned every assignment, seminar, and canteen visit into viral content. 40k followers and counting.'},
+  {e:'🍔',badge:'Canteen Royalty',title:'Canteen King',name:'Vikram Rao',desc:'Has a frequent-flyer card at every food stall on campus. Staff know his order by heart.'},
+  {e:'🧪',badge:'Nerd of the Year',title:'Walking Wikipedia',name:'Aishwarya Gupta',desc:'The person everyone texted at 11 PM before exams. Replied instantly, with sources and diagrams.'},
+  {e:'🕺',badge:'Party Icon',title:'Dancefloor CEO',name:'Nikhil Sharma',desc:'Broke out a routine at every college event. Even at the principal's convocation.'},
+  {e:'💤',badge:'Dream State',title:'Lecture Sleeper Pro',name:'Siddharth Patil',desc:'Mastered eyes-closed learning. Claims it\'s "auditory processing". We believe him.'},
+  {e:'🤝',badge:'True MVP',title:'Group Project Savior',name:'Meera Iyer',desc:'Completed 80% of every group project while smiling. The real backbone of every batch.'},
+];
+function makeAwards(){
+  document.getElementById('awardsGrid').innerHTML=AWARDS.map(a=>`
+    <div class="award-card fi">
+      <span class="award-emoji">${a.e}</span>
+      <div class="award-badge">${a.badge}</div>
+      <div class="award-title">${a.title}</div>
+      <div class="award-name">${a.name}</div>
+      <p class="award-desc">${a.desc}</p>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════
+   TIMELINE
+═══════════════════════════════════════ */
+const TL=[
+  {d:'First Year',t:'Suruvat ani Confusion',p:"College madhla pahila divas… nave chehre, nave friends, ani thoda sa darr.<br>Lectures peksha canteen jast interesting vataycha.<br>Attendance kami ani excitement jast.<br>“Kay chalalay he?” ha prashna rojach asaycha.<br>Pan hya saglyat kahi special loka bhetle… je nantar “friends” nahi tar “family” zale.",e:'🌅'},
+  {d:'Second Year',t:'Adjust honyacha phase',p:'Ata thoda college life samjhayla lagla.<br>Backlogs chi kalji pan suru zali 😅<br>Assignments last moment la complete karne hi kala develop zali.<br>Group banle, hangouts vadle, ani memories silently build hot hotya.<br>“College life mast aahe” he finally realise zala.',e:'⚙️'},
+  {d:'Third Year',t:'Reality check',p:'Internships, projects, submissions… sagla serious zala.<br>Future cha thought yen lagla.<br>Placement, skills, resume — sagla ekach veles.<br>Pan hya tension madhe pan aplya gang sobatli masti kadhi kami zali nahi.<br>Hech moments actually best hote.',e:'💼'},
+  {d:'Fourth Year',t:'Shevat ani Suruvat donhi',p:'Last year… ani suddenly sagla fast forward jhala.<br>Last lectures, last submissions, last bench masti…<br>“Kal paryant je normal hota, te aaj memories zali.”<br>Farewell cha divas — hasi pan hoti, ani dolyat paani pan.<br>Ata sagle vegveglya path var nighnar…<br>Pan ek goshta fixed aahe —<br>Aplya friendship la kadhi end nahi. ❤️',e:'🎓'}
+];
+function makeTimeline(){
+  document.getElementById('tlWrap').innerHTML=TL.map(e=>`
+    <div class="tl-item">
+      <div class="tl-box">
+        <div class="tl-date">${e.d}</div>
+        <h4>${e.t}</h4>
+        <p>${e.p}</p>
+      </div>
+      <div class="tl-center"><div class="tl-icon">${e.e}</div></div>
+      <div class="tl-empty"></div>
+    </div>`).join('');
+  const tlObs=new IntersectionObserver(entries=>{
+    entries.forEach((en,i)=>{
+      if(en.isIntersecting) setTimeout(()=>en.target.classList.add('show'),i*100);
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.tl-item').forEach(el=>tlObs.observe(el));
+}
+
+/* ═══════════════════════════════════════
+   PROFILES
+═══════════════════════════════════════ */
+const PROFILES=[
+  {nick:'The Architect',name:'Aditya Kulkarni',img:'https://randomuser.me/api/portraits/men/32.jpg',bio:'Coded his first app at 16. Never lets anyone forget it.',future:'🚀 IIT Bombay for M.Tech'},
+  {nick:'La Bella',name:'Sanya Mehta',img:'https://randomuser.me/api/portraits/women/44.jpg',bio:'Could explain any concept with one whiteboard and one marker.',future:'💼 Joining Google, Bangalore'},
+  {nick:'The Philosopher',name:'Aryan Desai',img:'https://randomuser.me/api/portraits/men/55.jpg',bio:'Asked "but why?" in every lecture. Actually helpful, actually annoying.',future:'🎓 PhD at BITS Pilani'},
+  {nick:'Queen Bee',name:'Pooja Rao',img:'https://randomuser.me/api/portraits/women/66.jpg',bio:'Led every cultural event. Could make a fest out of a power outage.',future:'🎨 UX Design at Adobe'},
+  {nick:'The Hustler',name:'Kabir Shah',img:'https://randomuser.me/api/portraits/men/77.jpg',bio:'3 internships, 2 startups, 0 chill. We admire and fear him equally.',future:'🏢 Co-founding a startup'},
+  {nick:'Night Owl',name:'Deepa Nair',img:'https://randomuser.me/api/portraits/women/22.jpg',bio:'Best code always written after midnight. A creature of the dark and git commits.',future:'☁️ Cloud Engineer at Amazon'},
+  {nick:'The Comedian',name:'Sameer Joshi',img:'https://randomuser.me/api/portraits/men/11.jpg',bio:'Turned every tough moment into a joke. We laughed our way through semesters.',future:'🎤 Pursuing stand-up comedy'},
+  {nick:'Miss Perfect',name:'Anjali Singh',img:'https://randomuser.me/api/portraits/women/33.jpg',bio:'Color-coded notes, 9.4 CGPA, and somehow also the kindest person here.',future:'📊 Data Scientist at Infosys'},
+];
+function makeProfiles(){
+  document.getElementById('profilesGrid').innerHTML=PROFILES.map(p=>`
+    <div class="p-card fi">
+      <div class="p-photo-wrap"><img class="p-photo" src="${p.img}" alt="${p.nick}" loading="lazy"></div>
+      <div class="p-info">
+        <div class="p-nick">"${p.nick}"</div>
+        <div class="p-name">${p.name}</div>
+        <p class="p-bio">${p.bio}</p>
+        <div class="p-future">${p.future}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════
+   POLL
+═══════════════════════════════════════ */
+const POLL_OPTS=[
+  {label:'Aditya Kulkarni',votes:42},
+  {label:'Sanya Mehta',votes:78},
+  {label:'Kabir Shah',votes:55},
+  {label:'Meera Iyer',votes:63},
+  {label:'Sameer Joshi',votes:38},
+];
+let pollVoted=false,pollData=POLL_OPTS.map(o=>({...o}));
+
+function makePoll(){renderPoll()}
+
+function renderPoll(){
+  const total=pollData.reduce((a,o)=>a+o.votes,0);
+  document.getElementById('pollTotal').textContent=`${total} votes cast`;
+  document.getElementById('pollOpts').innerHTML=pollData.map((o,i)=>{
+    const pct=total?Math.round((o.votes/total)*100):0;
+    return `<button class="poll-opt${pollVoted?' voted':''}" onclick="castVote(${i})" ${pollVoted?'disabled':''}>
+      <span>${o.label}</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="poll-bar-wrap" style="display:${pollVoted?'block':'none'}">
+          <div class="poll-bar" style="width:${pollVoted?pct:0}%"></div>
+        </div>
+        <span class="poll-pct" style="display:${pollVoted?'inline':'none'}">${pct}%</span>
+      </div>
+    </button>`;
+  }).join('');
+}
+
+function castVote(i){
+  if(pollVoted)return;
+  pollVoted=true;pollData[i].votes++;
+  renderPoll();
+  // animate bars
+  setTimeout(()=>{
+    document.querySelectorAll('.poll-bar').forEach((b,j)=>{
+      const total=pollData.reduce((a,o)=>a+o.votes,0);
+      const pct=Math.round((pollData[j].votes/total)*100);
+      b.style.width=pct+'%';
+    });
+  },50);
+  toast(`Voted for ${pollData[i].label}! 🗳️`);
+}
+
+/* ═══════════════════════════════════════
+   QUIZ
+═══════════════════════════════════════ */
+const QS=[
+  {q:'Which classroom famously had a broken AC all four years?',opts:['Room 201','Room 305','Room 112','Room 404'],ans:2},
+  {q:"What was the batch's go-to exam-night snack spot?",opts:["Gupta's Dhaba","Metro Cafe","Night Canteen","Star Bakery"],ans:2},
+  {q:'Who organised the farewell committee?',opts:['Sanya Mehta','Pooja Rao','Anjali Singh','Deepa Nair'],ans:1},
+  {q:'Approximately how many all-nighters did the batch collectively pull during final year?',opts:['Less than 50','Around 100','Way too many to count','Zero — they slept fine'],ans:2},
+  {q:'What was the unofficial batch motto?',opts:['"We tried"','"Ship it"','"One more hour"','"Ask Anjali"'],ans:3},
+];
+let qIdx=0,qScore=0,qDone=false;
+
+function makeQuiz(){renderQ()}
+
+function renderQ(){
+  const s=document.getElementById('quizShell');
+  if(qIdx>=QS.length){
+    s.innerHTML=`<div class="quiz-result">
+      <div class="quiz-big">${qScore}/${QS.length}</div>
+      <div class="quiz-msg">${scoreMsg()}</div>
+      <button class="cta-btn" onclick="restartQ()">Play Again 🔄</button>
+    </div>`;return;
+  }
+  const q=QS[qIdx],pct=(qIdx/QS.length)*100;
+  s.innerHTML=`
+    <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+    <div class="quiz-step">Question ${qIdx+1} of ${QS.length}</div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="pickQ(${i})">${o}</button>`).join('')}</div>
+    <div class="quiz-score-line">Score: ${qScore} &nbsp;·&nbsp; ${QS.length-qIdx} left</div>`;
+  qDone=false;
+}
+
+function pickQ(i){
+  if(qDone)return;qDone=true;
+  const q=QS[qIdx];
+  document.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
+  if(i!==q.ans)document.querySelectorAll('.quiz-opt')[i].classList.add('wrong');
+  else qScore++;
+  setTimeout(()=>{qIdx++;renderQ();},1200);
+}
+
+function scoreMsg(){
+  const p=qScore/QS.length;
+  if(p>=.8)return'Batch historian! You lived every moment 🏆';
+  if(p>=.5)return'Not bad at all — you were present! 😄';
+  return'You were bunking too much 😂 We love you anyway!';
+}
+
+function restartQ(){qIdx=0;qScore=0;renderQ();}
+
+/* ═══════════════════════════════════════
+   CONFETTI
+═══════════════════════════════════════ */
+function launchConfetti(){
+  const cv=document.getElementById('confetti-canvas');
+  cv.width=cv.offsetWidth||window.innerWidth;
+  cv.height=cv.offsetHeight||window.innerHeight;
+  const ctx=cv.getContext('2d');
+  const cols=['#c9a84c','#f0d080','#fff','#ff8fa3','#69db8f','#64b5f6','#b086ff','#ffd700'];
+  const ps=Array.from({length:220},()=>({
+    x:Math.random()*cv.width,y:Math.random()*cv.height-cv.height,
+    w:Math.random()*11+4,h:Math.random()*7+2,
+    col:cols[Math.floor(Math.random()*cols.length)],
+    rot:Math.random()*360,rv:(Math.random()-.5)*7,
+    vy:Math.random()*3.5+2,vx:(Math.random()-.5)*3,op:1
+  }));
+  let fr=0;
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ps.forEach(p=>{
+      ctx.save();ctx.globalAlpha=p.op;
+      ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.col;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+      p.x+=p.vx;p.y+=p.vy;p.rot+=p.rv;
+      if(p.y>cv.height*.8)p.op=Math.max(0,p.op-.025);
+    });
+    if(fr++<200)requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,cv.width,cv.height);
+  }
+  draw();
+  toast('🎊 Congratulations, Class of 2026!');
+}
+
+/* ═══════════════════════════════════════
+   SCROLL OBSERVER
+═══════════════════════════════════════ */
+function initScrollObs(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+  },{threshold:.1});
+  document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
+
+  // Mutation for dynamic content
+  const mut=new MutationObserver(()=>{
+    document.querySelectorAll('.fi:not(.vis)').forEach(el=>obs.observe(el));
+  });
+  mut.observe(document.body,{childList:true,subtree:true});
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200);
+}
+</script>
+</body>
+</html>
